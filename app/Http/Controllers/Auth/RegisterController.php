@@ -50,8 +50,11 @@ class RegisterController extends Controller
     {
         return Validator::make($data, [
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
+            'email' => 'required|strting|email|max:255|unique:users',
+            'password' => 'required|string|min:10|max:128|confirmed|regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/',
+            ],[
+                'password.regex' => 'Su contraseña debe tener más de 8 caracteres, debe contener al menos 1 mayúscula,
+                                        1 minúscula, 1 numérica y 1 carácter especial como [. * ]'
         ]);
     }
 
