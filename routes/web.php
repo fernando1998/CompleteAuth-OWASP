@@ -19,5 +19,5 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('auth/{provider}', 'Auth\SocialAuthController@redirect');
-Route::get('auth/{provider}/callback', 'Auth\SocialAuthController@callback');
+Route::get('auth/facebook', 'Auth\SocialAuthController@redirectToFacebook');
+Route::get('auth/facebook/callback', 'Auth\SocialAuthController@handleFacebookCallback');

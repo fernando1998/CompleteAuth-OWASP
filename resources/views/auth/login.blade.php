@@ -61,12 +61,16 @@
                                     {{ __('Forgot Your Password?') }}
                                 </a>
 
-                                <a href="{{ url('auth/facebook') }}" class="btn btn-primary">
-                                    <i class="fa fa-facebook">&nbsp;&nbsp;</i>Login Facebook
-                                </a>
+                               
                             </div>
 
 
+                        </div>
+                        <hr>
+                        <div class="form-group" align="center">
+                             <a href="{{ url('auth/facebook') }}" class="btn btn-default" style="border: 1px solid black">
+                                    <i class="fa fa-facebook">&nbsp;&nbsp;</i>Login Facebook
+                                </a>
                         </div>
                     </form>
                 </div>

@@ -15,7 +15,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'provider', 'provider_id'
+        'name', 'email', 'password', 'facebook_id'
     ];
 
     /**
@@ -26,4 +26,20 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+    
+    public function addNew($input)
+    {
+        $check = static::where('facebook_id',$input['facebook_id'])->first();
+
+
+        if(is_null($check)){
+            \Log::info('Model:---------------------------------------');
+            \Log::info($input);
+
+            return static::create($input);
+        }
+
+
+        return $check;
+    }
 }

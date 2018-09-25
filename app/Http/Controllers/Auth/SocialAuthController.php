@@ -17,49 +17,43 @@ class SocialAuthController extends Controller
      *
      * @return void
      */
-    public function redirect($provider)
+    public function redirectToFacebook()
     {
-        return Socialite::driver($provider)->redirect();
+        return Socialite::driver('facebook')->redirect();
     }
+
 
     /**
-     * Get the user info from provider and check if user exist for specific provider
-     * then log them in otherwise
-     * create a new user then log them in
-     * Once user is logged in then redirect to authenticated home page
+     * Create a new controller instance.
      *
-     * @return Response
+     * @return void
      */
-    public function callback($provider)
+    public function handleFacebookCallback()
     {
         try {
-            $user = Socialite::driver($provider)->user();
-            $input['name'] = $user->getName();
-            $input['email'] = $user->getEmail();
-            $input['provider'] = $provider;
-            $input['provider_id'] = $user->getId();
+            \Log::info('Action Callback');
+            
+            $user = Socialite::driver('facebook')->user();
+            \Log::info($user->getName());
+            \Log::info($user->getEmail());
+            \Log::info($user->getId());
+            
+            $create['name'] = $user->getName();
+            $create['email'] = $user->getEmail();
+            $create['facebook_id'] = $user->getId();
 
-            $authUser = $this->findOrCreate($input);
-            Auth::loginUsingId($authUser->id);
+
+            $userModel = new User;
+            $createdUser = $userModel->addNew($create);
+            Auth::loginUsingId($createdUser->id);
+
 
             return redirect()->route('home');
-
-
         } catch (Exception $e) {
+            \Log::info('Error');
+            \Log::info($e->getMessage());
 
-            return redirect('auth/'.$provider);
-
+            return redirect('/login');
         }
-    }
-    public function findOrCreate($input){
-        $checkIfExist = User::where('provider',$input['provider'])
-            ->where('provider_id',$input['provider_id'])
-            ->first();
-
-        if($checkIfExist){
-            return $checkIfExist;
-        }
-
-        return User::create($input);
     }
 }
