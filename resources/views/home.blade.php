@@ -14,8 +14,43 @@
                         </div>
                     @endif
 
-                    You are logged in!
+                    Bienvenido: 
+                    {{ Auth::user()->name }}
+                     <hr>
+                    Autentificación en 2 pasos: 
+                    @if( Auth::user()->doubleAuth)
+                        <div style="padding:20px;">
+                            <span class="btn btn-success">Estado Activo</span>    
+                        </div>
+                        
+                        <p>Inhabilitar doble autentificación:</p>
+                        <form action="{{route('changeDoubleAuth',['id'=> Auth::user()->id,'code'=> 2])}}" method="post">
+                                @csrf
+                                <button class="btn btn-danger" type="submit"
+                                onclick="confirm('¿Deseas deshabilitar la doble autentificación?')">
+                                Inhabilitar
+                            </button>
+                        </form>
+                    @else
+                        <div>
+                            <p style="color:red;">
+                                No tienes habilitado esta opción 
+                            </p>
+                            
+                            <form action="{{route('changeDoubleAuth',['id'=> Auth::user()->id,'code'=> 1])}}" method="post">
+                                @csrf
+                                <button class="btn btn-warning" type="submit"
+                                onclick="confirm('¿Deseas habilitar la doble autentificación? **Se te remitira un código para tu ingreso')">
+                                Habilitar
+                            </button>
+                            </form>
+                            
+                        </div>
+                    @endif
+                
                 </div>
+               
+                
             </div>
         </div>
     </div>
